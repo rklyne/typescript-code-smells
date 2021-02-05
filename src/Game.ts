@@ -30,19 +30,13 @@ export class Game {
 
       //if the positions in first row are taken
       // REFACTOR: LoD violations everywhere
-      const firstRowOwner = this._board.ownerOfAllTilesOnRow(0)
-      if (firstRowOwner && firstRowOwner != ' ') {
-        return firstRowOwner;
+      for (const row of [0, 1, 2]) {
+        const rowOwner = this._board.ownerOfAllTilesOnRow(row)
+        if (rowOwner && rowOwner != ' ') {
+          return rowOwner;
+        }
       }
-      const secondRowOwner = this._board.ownerOfAllTilesOnRow(1)
-      if (secondRowOwner && secondRowOwner != ' ') {
-        return secondRowOwner;
-      }
-      const thirdRowOwner = this._board.ownerOfAllTilesOnRow(2)
-      if (thirdRowOwner && thirdRowOwner != ' ') {
-        return thirdRowOwner;
-      }
-        return ' ';
+      return ' ';
     }
 }
 
