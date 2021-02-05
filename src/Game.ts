@@ -1,8 +1,8 @@
 export class Game {
-    private _lastSymbol: string = ' ';
+    private _lastSymbol: Symbol = ' ';
     private _board: Board = new Board();
 
-    public Play(symbol: string, x: number, y: number) : void {
+    public Play(symbol: Symbol, x: number, y: number) : void {
         //if first move
         if (this._lastSymbol == ' ') {
             //if player is X
@@ -24,46 +24,24 @@ export class Game {
         this._board.AddTileAt(symbol, x, y);
     }
 
-    public Winner() : string {
+    public Winner() : Symbol {
       // REFACTOR: three large repeated blocks in here - fix it
       // SMELL: many comments (and they were wrong)
 
       //if the positions in first row are taken
       // REFACTOR: LoD violations everywhere
-            if (this._board.TileAt(0, 0)!.Symbol ==
-                    this._board.TileAt(0, 1)!.Symbol &&
-                    this._board.TileAt(0, 2)!.Symbol == this._board.TileAt(0, 1)!.Symbol) {
-                if (this._board.TileAt(0, 0)!.Symbol != ' ') {
-                  return this._board.TileAt(0, 0)!.Symbol;
-                }
-            }
-
-        //if the positions in SECOND row are taken
-        if (this._board.TileAt(1, 0)!.Symbol != ' ' &&
-                this._board.TileAt(1, 1)!.Symbol != ' ' &&
-                this._board.TileAt(1, 2)!.Symbol != ' ') {
-            //if middle row is full with same symbol
-            if (this._board.TileAt(1, 0)!.Symbol ==
-                    this._board.TileAt(1, 1)!.Symbol &&
-                    this._board.TileAt(1, 2)!.Symbol ==
-                            this._board.TileAt(1, 1)!.Symbol) {
-                return this._board.TileAt(1, 0)!.Symbol;
-            }
-        }
-
-        //if the positions in THIRD row are taken
-        if (this._board.TileAt(2, 0)!.Symbol != ' ' &&
-                this._board.TileAt(2, 1)!.Symbol != ' ' &&
-                this._board.TileAt(2, 2)!.Symbol != ' ') {
-            //if THIRD row is full with same symbol
-            if (this._board.TileAt(2, 0)!.Symbol ==
-                    this._board.TileAt(2, 1)!.Symbol &&
-                    this._board.TileAt(2, 2)!.Symbol ==
-                            this._board.TileAt(2, 1)!.Symbol) {
-                return this._board.TileAt(2, 0)!.Symbol;
-            }
-        }
-
+      const firstRowOwner = this._board.ownerOfAllTilesOnRow(0)
+      if (firstRowOwner && firstRowOwner != ' ') {
+        return firstRowOwner;
+      }
+      const secondRowOwner = this._board.ownerOfAllTilesOnRow(1)
+      if (secondRowOwner && secondRowOwner != ' ') {
+        return secondRowOwner;
+      }
+      const thirdRowOwner = this._board.ownerOfAllTilesOnRow(2)
+      if (thirdRowOwner && thirdRowOwner != ' ') {
+        return thirdRowOwner;
+      }
         return ' ';
     }
 }
@@ -72,8 +50,10 @@ interface Tile
 {
     X: number;
     Y: number;
-    Symbol: string;
+    Symbol: Symbol;
 }
+
+type Symbol = "X" | "O" | " "
 
 class Board
 {
@@ -96,11 +76,22 @@ class Board
         return this._plays.find((t:Tile) => t.X == x && t.Y == y)!
     }
 
-    public AddTileAt(symbol: string, x: number, y: number) : void
+    public AddTileAt(symbol: Symbol, x: number, y: number) : void
     {
         const tile : Tile = {X :x, Y:y, Symbol:symbol};
 
         // SMELL: LoD violation
         this._plays.find((t:Tile) => t.X == x && t.Y == y)!.Symbol = symbol;
     }
+
+  public ownerOfAllTilesOnRow(row: number): Symbol {
+    if (this.TileAt(row, 0)!.Symbol ==
+      this.TileAt(row, 1)!.Symbol &&
+      this.TileAt(row, 2)!.Symbol == this.TileAt(row, 1)!.Symbol) {
+      if (this.TileAt(row, 0)!.Symbol != ' ') {
+        return this.TileAt(row, 0)!.Symbol;
+      }
+    }
+    return ' ';
+  }
 }
