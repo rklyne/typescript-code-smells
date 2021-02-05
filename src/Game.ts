@@ -12,7 +12,7 @@ export class Game {
       throw new Error("Invalid next player");
     }
     //if not first move but play on an already played tile
-    else if (this._board.TileAt(x, y).Player != " ") {
+    else if (this._board.tileIsTaken(x, y)) {
       throw new Error("Invalid position");
     }
 
@@ -82,5 +82,9 @@ class Board {
       }
     }
     return " ";
+  }
+
+  public tileIsTaken(x: number, y: number): boolean {
+    return this.TileAt(x, y).Player != " "
   }
 }
