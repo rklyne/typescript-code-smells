@@ -3,15 +3,9 @@ export class Game {
   private _board: Board = new Board();
 
   public Play(player: Player, x: number, y: number): void {
-    if (this._isFirstMove()) {
-      if (player == "O") {
-        throw new Error("Invalid first player");
-      }
-    }
-    else if (this._lastPlayerIs(player)) {
+    if (!this._playerCanGoNext(player)){
       throw new Error("Invalid next player");
     }
-    //if not first move but play on an already played tile
     else if (this._board.tileIsTaken(x, y)) {
       throw new Error("Invalid position");
     }
@@ -29,6 +23,13 @@ export class Game {
       }
     }
     return " ";
+  }
+
+  private _playerCanGoNext(player: Player): boolean {
+    if (this._isFirstMove()) {
+      return player == "X"
+    }
+    return !this._lastPlayerIs(player)
   }
 
   private _lastPlayerIs(player: Player): boolean {
