@@ -11,7 +11,7 @@ export class Game {
       }
     }
     //if not first move but player repeated
-    else if (symbol == this._lastSymbol) {
+    else if (this._lastPlayerIs(symbol)) {
       throw new Error("Invalid next player");
     }
     //if not first move but play on an already played tile
@@ -32,6 +32,10 @@ export class Game {
       }
     }
     return " ";
+  }
+
+  private _lastPlayerIs(symbol: Symbol): boolean {
+    return symbol == this._lastSymbol;
   }
 }
 
