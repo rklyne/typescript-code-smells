@@ -8,6 +8,10 @@ describe('TicTacToe game', () => {
         game = new Game();
     });
 
+    it('a new game should have no winner', () => {
+      expect(game.Winner()).toBe(' ');
+    });
+
     it('should not allow player O to play first', () => {
         expect(() => game.Play('O', 0, 0)).toThrow();
     });
@@ -58,6 +62,18 @@ describe('TicTacToe game', () => {
         game.Play('O', 0, 0);
         game.Play('X', 1, 1);
         game.Play('O', 0, 1);
+        game.Play('X', 1, 2);
+       
+        var winner = game.Winner();
+        
+        expect(winner).toBe("X");
+    });
+    
+    it('should declare player X as winner if it plays three in middle row and O plays only in bottom row', () => {
+        game.Play('X', 1, 0);
+        game.Play('O', 2, 0);
+        game.Play('X', 1, 1);
+        game.Play('O', 2, 1);
         game.Play('X', 1, 2);
        
         var winner = game.Winner();

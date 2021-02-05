@@ -25,19 +25,20 @@ export class Game {
     }
 
     public Winner() : string {
-        //if the positions in first row are taken
-        if (this._board.TileAt(0, 0)!.Symbol != ' ' &&
-                this._board.TileAt(0, 1)!.Symbol != ' ' &&
-                this._board.TileAt(0, 2)!.Symbol != ' ') {
-            //if first row is full with same symbol
+      // REFACTOR: three large repeated blocks in here - fix it
+      // SMELL: many comments (and they were wrong)
+
+      //if the positions in first row are taken
+      // REFACTOR: LoD violations everywhere
             if (this._board.TileAt(0, 0)!.Symbol ==
                     this._board.TileAt(0, 1)!.Symbol &&
                     this._board.TileAt(0, 2)!.Symbol == this._board.TileAt(0, 1)!.Symbol) {
-                return this._board.TileAt(0, 0)!.Symbol;
+                if (this._board.TileAt(0, 0)!.Symbol != ' ') {
+                  return this._board.TileAt(0, 0)!.Symbol;
+                }
             }
-        }
 
-        //if the positions in first row are taken
+        //if the positions in SECOND row are taken
         if (this._board.TileAt(1, 0)!.Symbol != ' ' &&
                 this._board.TileAt(1, 1)!.Symbol != ' ' &&
                 this._board.TileAt(1, 2)!.Symbol != ' ') {
@@ -50,11 +51,11 @@ export class Game {
             }
         }
 
-        //if the positions in first row are taken
+        //if the positions in THIRD row are taken
         if (this._board.TileAt(2, 0)!.Symbol != ' ' &&
                 this._board.TileAt(2, 1)!.Symbol != ' ' &&
                 this._board.TileAt(2, 2)!.Symbol != ' ') {
-            //if middle row is full with same symbol
+            //if THIRD row is full with same symbol
             if (this._board.TileAt(2, 0)!.Symbol ==
                     this._board.TileAt(2, 1)!.Symbol &&
                     this._board.TileAt(2, 2)!.Symbol ==
@@ -90,6 +91,7 @@ class Board
         }
     }
 
+  // SMELL: the type of this method seems to encourage LoD problems
     public TileAt(x:  number, y: number): Tile {
         return this._plays.find((t:Tile) => t.X == x && t.Y == y)!
     }
@@ -98,6 +100,7 @@ class Board
     {
         const tile : Tile = {X :x, Y:y, Symbol:symbol};
 
+        // SMELL: LoD violation
         this._plays.find((t:Tile) => t.X == x && t.Y == y)!.Symbol = symbol;
     }
 }
