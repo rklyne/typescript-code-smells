@@ -67,7 +67,8 @@ class Board {
 
   public AddTileAt(player: Player, x: number, y: number): void {
     // SMELL: LoD violation
-    this._plays.find((t: Tile) => t.X == x && t.Y == y)!.Player = player;
+    const targetTile = this._plays.find((t: Tile) => t.X == x && t.Y == y)!;
+    targetTile.Player = player;
   }
 
   public ownerOfAllTilesOnRow(row: number): Player {
