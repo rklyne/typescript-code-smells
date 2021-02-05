@@ -3,9 +3,7 @@ export class Game {
   private _board: Board = new Board();
 
   public Play(player: Player, x: number, y: number): void {
-    //if first move
-    if (this._lastPlayer == " ") {
-      //if player is X
+    if (this._isFirstMove()) {
       if (player == "O") {
         throw new Error("Invalid first player");
       }
@@ -35,6 +33,10 @@ export class Game {
 
   private _lastPlayerIs(player: Player): boolean {
     return player == this._lastPlayer;
+  }
+
+  private _isFirstMove(): boolean {
+    return this._lastPlayer == " ";
   }
 }
 
