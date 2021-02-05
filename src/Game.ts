@@ -25,11 +25,6 @@ export class Game {
     }
 
     public Winner() : Symbol {
-      // REFACTOR: three large repeated blocks in here - fix it
-      // SMELL: many comments (and they were wrong)
-
-      //if the positions in first row are taken
-      // REFACTOR: LoD violations everywhere
       for (const row of [0, 1, 2]) {
         const rowOwner = this._board.ownerOfAllTilesOnRow(row)
         if (rowOwner && rowOwner != ' ') {
@@ -79,6 +74,7 @@ class Board
     }
 
   public ownerOfAllTilesOnRow(row: number): Symbol {
+    // REFACTOR: LoD violations everywhere
     if (this.TileAt(row, 0)!.Symbol ==
       this.TileAt(row, 1)!.Symbol &&
       this.TileAt(row, 2)!.Symbol == this.TileAt(row, 1)!.Symbol) {
