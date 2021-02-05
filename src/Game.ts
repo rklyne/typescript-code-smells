@@ -61,14 +61,11 @@ class Board {
     }
   }
 
-  // SMELL: the type of this method seems to encourage LoD problems
   public TileAt(x: number, y: number): Tile {
     return this._plays.find((t: Tile) => t.X == x && t.Y == y)!;
   }
 
   public AddTileAt(player: Player, x: number, y: number): void {
-    const tile: Tile = { X: x, Y: y, Player: player };
-
     // SMELL: LoD violation
     this._plays.find((t: Tile) => t.X == x && t.Y == y)!.Player = player;
   }
