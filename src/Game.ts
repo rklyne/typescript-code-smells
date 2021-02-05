@@ -61,29 +61,31 @@ class Board {
     }
   }
 
-  public TileAt(x: number, y: number): Tile {
-    return this._plays.find((t: Tile) => t.X == x && t.Y == y)!;
-  }
-
   public AddTileAt(player: Player, x: number, y: number): void {
     // SMELL: LoD violation
-    const targetTile = this._plays.find((t: Tile) => t.X == x && t.Y == y)!;
+    const targetTile = this._plays.find(
+        (t: Tile) => t.X == x && t.Y == y
+    )!;
     targetTile.Player = player;
   }
 
   public ownerOfAllTilesOnRow(row: number): Player {
     if (
-      this.TileAt(row, 0)!.Player == this.TileAt(row, 1)!.Player &&
-      this.TileAt(row, 2)!.Player == this.TileAt(row, 1)!.Player
+      this._tileAt(row, 0)!.Player == this._tileAt(row, 1)!.Player &&
+      this._tileAt(row, 2)!.Player == this._tileAt(row, 1)!.Player
     ) {
-      if (this.TileAt(row, 0)!.Player != " ") {
-        return this.TileAt(row, 0)!.Player;
+      if (this._tileAt(row, 0)!.Player != " ") {
+        return this._tileAt(row, 0)!.Player;
       }
     }
     return " ";
   }
 
   public tileIsTaken(x: number, y: number): boolean {
-    return this.TileAt(x, y).Player != " "
+    return this._tileAt(x, y).Player != " "
+  }
+
+  private _tileAt(x: number, y: number): Tile {
+    return this._plays.find((t: Tile) => t.X == x && t.Y == y)!;
   }
 }
